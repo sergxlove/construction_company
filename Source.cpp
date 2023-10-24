@@ -14,6 +14,7 @@ public:
 	int find_max(vector<Construction_company> *arr_company, int var_find);
 	int find_min(vector<Construction_company> *arr_company, int var_find);
 	void write_file(string path, vector<Construction_company> *company);
+	void read_file(string path, vector<Construction_company>* company);
 private:
 	string customer; //заказчик
 	string type_work; //тип строительных работ
@@ -334,14 +335,43 @@ void Construction_company::write_file(string path, vector<Construction_company> 
 		cout << "Файл успешно открыт" << endl;
 		for (auto& el : *company)
 		{
-			file << el.customer;
-			file << el.type_work;
-			file << el.scope_work;
-			file << el.time_work;
-			file << el.price_work;
-			file << el.name;
+			file << el.customer<<"\n";
+			file << el.type_work<<"\n";
+			file << el.scope_work<<"\n";
+			file << el.time_work<<"\n";
+			file << el.price_work<<"\n";
+			file << el.name<<"\n";
 		}
 		cout << "Данные успешно записаны в файл" << endl;
+		file.close();
+	}
+	else
+	{
+		cout << "Ошибка открытия файла" << endl;
+	}
+}
+
+void Construction_company::read_file(string path, vector<Construction_company>* company)
+{
+	fstream file;
+	string str;
+	file.open(path, fstream::in);
+	if (file.is_open())
+	{
+		cout << "Файл успешно открыт" << endl;
+		for (auto& el : *company)
+		{
+			getline(file, el.customer);
+			getline(file, el.type_work);
+			getline(file, str);
+			scope_work = stoi(str);
+			getline(file, str);
+			time_work = stoi(str);
+			getline(file, str);
+			price_work = stoi(str);
+			getline(file, name);
+		}
+		cout << "Данные успешно считаны из файла" << endl;
 	}
 	else
 	{
