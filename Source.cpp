@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 using namespace std;
 class Construction_company
 {
@@ -13,8 +14,10 @@ public:
 	void print_field();
 	int find_max(vector<Construction_company> *arr_company, int var_find);
 	int find_min(vector<Construction_company> *arr_company, int var_find);
-	void write_file(string path, vector<Construction_company> *company);
-	void read_file(string path, vector<Construction_company>* company);
+	void write_file(string path,string path_two, vector<Construction_company> *company);
+	void read_file(string path, string path_two, vector<Construction_company>* company);
+	void search_field(vector<Construction_company>* company, int var_field, string field);
+	void sort_field(vector<Construction_company>* company, int var_field);
 private:
 	string customer; //заказчик
 	string type_work; //тип строительных работ
@@ -30,6 +33,7 @@ public:
 	void print_line();
 	void print_doubleLine();
 	void print_field_for_max_or_min();
+	void print_field();
 private:
 };
 int main()
@@ -39,6 +43,7 @@ int main()
 	int var_menu = 0;
 	int var_delete = 0;
 	int var_find = 0;
+	int var_field = 0;
 	bool exit = false;
 	int result = 0;
 	vector<Construction_company> arr_company;
@@ -53,10 +58,13 @@ int main()
 	string second_name = "";
 	string third_name = "";
 	int count = 1;
+	string name_field = "";
 	string path = "data_company.txt";
+	string path_colEl = "colvo_el.txt";
 	menu.print_doubleLine();
 	menu.print_info();
 	menu.print_doubleLine();
+	company.read_file(path, path_colEl, &arr_company);
 	while (exit!=true)
 	{
 		cout << "Выберите действие : " << endl;
@@ -121,11 +129,25 @@ int main()
 			}
 			break;
 		case 3:
-			company.write_file(path, &arr_company);
+			if (arr_company.empty())
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
+			else
+			{
+				company.write_file(path,path_colEl, &arr_company);
+			}
 			break;
 		case 4:
+			company.read_file(path, path_colEl, &arr_company);
 			break;
 		case 5:
+			menu.print_field();
+			cout << "Выберите полу по которому хотите провести поиск" << endl;
+			cin >> var_field;
+			cout << "Введи содержимое данного поля" << endl;
+			cin >> name_field;
+			company.search_field(&arr_company, var_field, name_field);
 			break;
 		case 6:
 			if (arr_company.empty())
@@ -170,6 +192,10 @@ int main()
 			}
 			break;
 		case 8:
+			menu.print_field();
+			cout << "Выберите полу по которому хотите провести сортировку" << endl;
+			cin >> var_field;
+			company.sort_field(&arr_company, var_field);
 			break;
 		case 9:
 			if (arr_company.empty())
@@ -326,11 +352,13 @@ int Construction_company::find_min(vector<Construction_company> *arr_company, in
 	return min;
 }
 
-void Construction_company::write_file(string path, vector<Construction_company> *company)
+void Construction_company::write_file(string path, string path_two,vector<Construction_company> *company)
 {
 	fstream file;
+	fstream file_col;
 	file.open(path, fstream::out | fstream::app);
-	if (file.is_open())
+	file_col.open(path_two, fstream::out);
+	if (file.is_open()&&file_col.is_open())
 	{
 		cout << "Файл успешно открыт" << endl;
 		for (auto& el : *company)
@@ -342,8 +370,11 @@ void Construction_company::write_file(string path, vector<Construction_company> 
 			file << el.price_work<<"\n";
 			file << el.name<<"\n";
 		}
+		file_col.clear();
+		file_col << company->size();
 		cout << "Данные успешно записаны в файл" << endl;
 		file.close();
+		file_col.close();
 	}
 	else
 	{
@@ -351,31 +382,127 @@ void Construction_company::write_file(string path, vector<Construction_company> 
 	}
 }
 
-void Construction_company::read_file(string path, vector<Construction_company>* company)
+void Construction_company::read_file(string path, string path_two, vector<Construction_company>* company)
 {
 	fstream file;
 	string str;
+	fstream file_col;
+	Construction_company comp;
+	int count = 0;
 	file.open(path, fstream::in);
-	if (file.is_open())
+	file_col.open(path_two, fstream::in);
+	if (file.is_open()&&file_col.is_open())
 	{
 		cout << "Файл успешно открыт" << endl;
-		for (auto& el : *company)
+		getline(file_col, str);
+		count = stoi(str);
+		for (int i = 0;i < count;i++)
 		{
-			getline(file, el.customer);
-			getline(file, el.type_work);
+			getline(file, comp.customer);
+			getline(file, comp.type_work);
 			getline(file, str);
-			scope_work = stoi(str);
+			comp.scope_work = stoi(str);
 			getline(file, str);
-			time_work = stoi(str);
+			comp.time_work = stoi(str);
 			getline(file, str);
-			price_work = stoi(str);
-			getline(file, name);
+			comp.price_work = stoi(str);
+			getline(file, comp.name);
+			company->push_back(comp);
 		}
 		cout << "Данные успешно считаны из файла" << endl;
+		file.close();
+		file_col.close();
 	}
 	else
 	{
 		cout << "Ошибка открытия файла" << endl;
+	}
+}
+
+void Construction_company::search_field(vector<Construction_company>* company, int var_field, string field)
+{
+	for (auto& el : *company)
+	{
+		switch (var_field)
+		{
+		case 1:
+			if (field == el.customer)
+			{
+				el.print_field();
+			}
+			break;
+		case 2:
+			if (field == el.type_work)
+			{
+				el.print_field();
+			}
+			break;
+		case 3:
+			if (stoi(field) == el.scope_work)
+			{
+				el.print_field();
+			}
+			break;
+		case 4:
+			if (stoi(field) == el.time_work)
+			{
+				el.print_field();
+			}
+			break;
+		case 5:
+			if (stoi(field) == el.price_work)
+			{
+				el.print_field();
+			}
+			break;
+		case 6:
+			if (field == el.name)
+			{
+				el.print_field();
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Construction_company::sort_field(vector<Construction_company>* company, int var_field)
+{
+	switch (var_field)
+	{
+	case 1:
+		sort(company->begin(), company->end(), [](const Construction_company &c1, const Construction_company & c2) {
+			return c1.customer > c2.customer;
+			});
+		break;
+	case 2:
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
+			return c1.type_work > c2.type_work;
+			});
+		break;
+	case 3:
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
+			return c1.scope_work > c2.scope_work;
+			});
+		break;
+	case 4:
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
+			return c1.time_work > c2.time_work;
+			});
+		break;
+	case 5:
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
+			return c1.price_work > c2.price_work;
+			});
+		break;
+	case 6:
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
+			return c1.name > c2.name;
+			});
+		break;
+	default:
+		break;
 	}
 }
 
@@ -414,4 +541,15 @@ void Menu::print_field_for_max_or_min()
 	cout << "1 - Объем работы" << endl;
 	cout << "2 - Продолжительность работы" << endl;
 	cout << "3 - Стоимость работы" << endl;
+}
+
+void Menu::print_field()
+{
+	cout << "Доступные поля" << endl;
+	cout << "1 - Заказчик" << endl;
+	cout << "2 - Тип строительных работ" << endl;
+	cout << "3 - Объем работ" << endl;
+	cout << "4 - Продолжительность работ" << endl;
+	cout << "5 - Стоимость работ" << endl;
+	cout << "6 - Фио ответственного" << endl;
 }
