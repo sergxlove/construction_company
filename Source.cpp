@@ -102,6 +102,7 @@ int main()
 			cout << "Объект класса создан" << endl;
 			break;
 		case 2:
+			menu.print_line();
 			if (arr_company.empty())
 			{
 				cout << "В векторе нет объектов" << endl;
@@ -127,8 +128,10 @@ int main()
 					cout << "Объект не найден" << endl;
 				}
 			}
+			menu.print_line();
 			break;
 		case 3:
+			menu.print_line();
 			if (arr_company.empty())
 			{
 				cout << "В векторе нет объектов" << endl;
@@ -138,18 +141,24 @@ int main()
 				company.write_file(path,path_colEl, &arr_company);
 			}
 			break;
+			menu.print_line();
 		case 4:
+			menu.print_line();
 			company.read_file(path, path_colEl, &arr_company);
+			menu.print_line();
 			break;
 		case 5:
+			menu.print_line();
 			menu.print_field();
 			cout << "Выберите полу по которому хотите провести поиск" << endl;
 			cin >> var_field;
 			cout << "Введи содержимое данного поля" << endl;
 			cin >> name_field;
 			company.search_field(&arr_company, var_field, name_field);
+			menu.print_line();
 			break;
 		case 6:
+			menu.print_line();
 			if (arr_company.empty())
 			{
 				cout << "В векторе нет объектов" << endl;
@@ -169,8 +178,10 @@ int main()
 					cout << "Неверно выбрано поле" << endl;
 				}
 			}
+			menu.print_line();
 			break;
 		case 7:
+			menu.print_line();
 			if (arr_company.empty())
 			{
 				cout << "В векторе нет объектов" << endl;
@@ -190,14 +201,18 @@ int main()
 					cout << "Неверно выбрано поле" << endl;
 				}
 			}
+			menu.print_line();
 			break;
 		case 8:
+			menu.print_line();
 			menu.print_field();
 			cout << "Выберите полу по которому хотите провести сортировку" << endl;
 			cin >> var_field;
 			company.sort_field(&arr_company, var_field);
+			menu.print_line();
 			break;
 		case 9:
+			menu.print_line();
 			if (arr_company.empty())
 			{
 				cout << "В векторе нет объектов" << endl;
@@ -214,6 +229,7 @@ int main()
 					menu.print_doubleLine();
 				}
 			}
+			menu.print_line();
 			break;
 		case 10:
 			exit = true; 

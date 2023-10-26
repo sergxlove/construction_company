@@ -1,18 +1,1 @@
-apple
-hz
-1
-2
-1234
-s v l
-sumsung
-hz2
-2
-3
-2345
-l f a
-xiaomi
-hz3
-3
-4
-3456
-a d l
+
