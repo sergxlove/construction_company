@@ -13,9 +13,10 @@ public:
 	void in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name);
 	void print_field();
 	int find_max(vector<Construction_company> *arr_company, int var_find);
-	int find_min(vector<Construction_company> *arr_company, int var_find);
-	void write_file(string path,string path_two, vector<Construction_company> *company);
+	int find_min(vector<Construction_company>* arr_company, int var_find);
+	void write_file(string path, vector<Construction_company>* company);
 	void read_file(string path, string path_two, vector<Construction_company>* company);
+	void read_file(string path, vector<Construction_company>* company);
 	void search_field(vector<Construction_company>* company, int var_field, string field);
 	void sort_field(vector<Construction_company>* company, int var_field);
 private:
@@ -40,31 +41,21 @@ int main()
 {
 	setlocale(LC_ALL, "rus");
 	Menu menu;
-	int var_menu = 0;
-	int var_delete = 0;
-	int var_find = 0;
-	int var_field = 0;
+	int var_menu, var_delete, var_find, var_field;
+	var_menu = var_delete = var_find = var_field = 0;
 	bool exit = false;
-	int result = 0;
 	vector<Construction_company> arr_company;
 	Construction_company company;
-	string customer = "";
-	string type_work = "";
-	int scope_work = 0;
-	int time_work = 0; 
-	int price_work = 0; 
-	string name = "";
-	string first_name = "";
-	string second_name = "";
-	string third_name = "";
+	string customer, type_work, name, first_name, second_name, third_name, name_field;
+	int result, scope_work, time_work, price_work;
+	result = scope_work = time_work = price_work = 0;
 	int count = 1;
-	string name_field = "";
 	string path = "data_company.txt";
 	string path_colEl = "colvo_el.txt";
 	menu.print_doubleLine();
 	menu.print_info();
 	menu.print_doubleLine();
-	company.read_file(path, path_colEl, &arr_company);
+	company.read_file(path, &arr_company);
 	while (exit!=true)
 	{
 		cout << "Выберите действие : " << endl;
@@ -122,6 +113,7 @@ int main()
 				{
 					arr_company.erase(arr_company.begin() + var_delete-1);
 					cout << "Объект удален" << endl;
+					company.write_file(path, &arr_company);
 				}
 				else
 				{
@@ -138,7 +130,7 @@ int main()
 			}
 			else
 			{
-				company.write_file(path,path_colEl, &arr_company);
+				company.write_file(path,&arr_company);
 			}
 			break;
 			menu.print_line();
@@ -150,7 +142,7 @@ int main()
 		case 5:
 			menu.print_line();
 			menu.print_field();
-			cout << "Выберите полу по которому хотите провести поиск" << endl;
+			cout << "Выберите поле по которому хотите провести поиск" << endl;
 			cin >> var_field;
 			cout << "Введи содержимое данного поля" << endl;
 			cin >> name_field;
@@ -245,7 +237,7 @@ int main()
 	}
 	return 0;
 }
-
+//стандартный конструктор
 Construction_company::Construction_company()
 {
 	this->customer = "";
@@ -255,7 +247,7 @@ Construction_company::Construction_company()
 	this->price_work = 0;
 	this->name = "";
 }
-
+//конструктор с параметрами
 Construction_company::Construction_company(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
 {
 	this->customer = customer;
@@ -265,7 +257,7 @@ Construction_company::Construction_company(string customer, string type_work, in
 	this->price_work = price_work;
 	this->name = name;
 }
-
+//стандартный деструктор
 Construction_company::~Construction_company()
 {
 	this->customer = "";
@@ -275,7 +267,7 @@ Construction_company::~Construction_company()
 	this->price_work = 0;
 	this->name = "";
 }
-
+//функция, заполняющая поля класса
 void Construction_company::in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
 {
 	this->customer = customer;
@@ -285,7 +277,7 @@ void Construction_company::in_date(string customer, string type_work, int scope_
 	this->price_work = price_work;
 	this->name = name;
 }
-
+//печать всех полей класса
 void Construction_company::print_field()
 {
 	cout << "Заказчик : " << customer << endl;
@@ -295,7 +287,7 @@ void Construction_company::print_field()
 	cout << "Стоимость работ : " << price_work << endl;
 	cout << "ФИО ответственного : " << name << endl;
 }
-
+//поиск максимального элемента
 int Construction_company::find_max(vector<Construction_company> *arr_company, int var_find)
 {
 	int max = 0;
@@ -331,7 +323,7 @@ int Construction_company::find_max(vector<Construction_company> *arr_company, in
 	}
 	return max;
 }
-
+//поиск минимального элемента
 int Construction_company::find_min(vector<Construction_company> *arr_company, int var_find)
 {
 	int min = 100000;
@@ -367,37 +359,33 @@ int Construction_company::find_min(vector<Construction_company> *arr_company, in
 	}
 	return min;
 }
-
-void Construction_company::write_file(string path, string path_two,vector<Construction_company> *company)
+//запись полей класса в файл
+void Construction_company::write_file(string path, vector<Construction_company>* company)
 {
 	fstream file;
-	fstream file_col;
-	file.open(path, fstream::out | fstream::app);
-	file_col.open(path_two, fstream::out);
-	if (file.is_open()&&file_col.is_open())
+	file.open(path, fstream::out);
+	if (file.is_open())
 	{
 		cout << "Файл успешно открыт" << endl;
+		file << company->size() << "\n";
 		for (auto& el : *company)
 		{
-			file << el.customer<<"\n";
-			file << el.type_work<<"\n";
-			file << el.scope_work<<"\n";
-			file << el.time_work<<"\n";
-			file << el.price_work<<"\n";
-			file << el.name<<"\n";
+			file << el.customer << "\n";
+			file << el.type_work << "\n";
+			file << el.scope_work << "\n";
+			file << el.time_work << "\n";
+			file << el.price_work << "\n";
+			file << el.name << "\n";
 		}
-		file_col.clear();
-		file_col << company->size();
-		cout << "Данные успешно записаны в файл" << endl;
+		cout << "Данные успешно записаны" << endl;
 		file.close();
-		file_col.close();
 	}
 	else
 	{
 		cout << "Ошибка открытия файла" << endl;
 	}
 }
-
+//чтение полей класса из файла
 void Construction_company::read_file(string path, string path_two, vector<Construction_company>* company)
 {
 	fstream file;
@@ -428,6 +416,40 @@ void Construction_company::read_file(string path, string path_two, vector<Constr
 		cout << "Данные успешно считаны из файла" << endl;
 		file.close();
 		file_col.close();
+	}
+	else
+	{
+		cout << "Ошибка открытия файла" << endl;
+	}
+}
+
+void Construction_company::read_file(string path, vector<Construction_company>* company)
+{
+	fstream file;
+	string str;
+	Construction_company comp;
+	int size = 0;
+	file.open(path, fstream::in);
+	if (file.is_open())
+	{
+		cout << "Файл успешно открыт" << endl;
+		getline(file, str);
+		size = stoi(str);
+		for (int i = 0;i < size;i++)
+		{
+			getline(file, comp.customer);
+			getline(file, comp.type_work);
+			getline(file, str);
+			comp.scope_work = stoi(str);
+			getline(file, str);
+			comp.time_work = stoi(str);
+			getline(file, str);
+			comp.price_work = stoi(str);
+			getline(file, comp.name);
+			company->push_back(comp);
+		}
+		cout << "Данные успешно считаны из файла" << endl;
+		file.close();
 	}
 	else
 	{
