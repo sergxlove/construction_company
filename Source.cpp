@@ -15,7 +15,6 @@ public:
 	int find_max(vector<Construction_company> *arr_company, int var_find);
 	int find_min(vector<Construction_company>* arr_company, int var_find);
 	void write_file(string path, vector<Construction_company>* company);
-	void read_file(string path, string path_two, vector<Construction_company>* company);
 	void read_file(string path, vector<Construction_company>* company);
 	void search_field(vector<Construction_company>* company, int var_field, string field);
 	void sort_field(vector<Construction_company>* company, int var_field);
@@ -78,10 +77,10 @@ int main()
 			cout << "Введите стоимость работы" << endl;
 			cin >> price_work;
 			menu.print_line();
-			cout << "Введите имя ответственного" << endl;
+			cout << "Введите фамилию ответственного" << endl;
 			cin >> first_name;
 			menu.print_line();
-			cout << "Введите фамилию ответсвенного" << endl;
+			cout << "Введите имя ответсвенного" << endl;
 			cin >> second_name;
 			menu.print_line();
 			cout << "Введите отчество ответственного" << endl;
@@ -136,7 +135,7 @@ int main()
 			menu.print_line();
 		case 4:
 			menu.print_line();
-			company.read_file(path, path_colEl, &arr_company);
+			company.read_file(path, &arr_company);
 			menu.print_line();
 			break;
 		case 5:
@@ -386,43 +385,6 @@ void Construction_company::write_file(string path, vector<Construction_company>*
 	}
 }
 //чтение полей класса из файла
-void Construction_company::read_file(string path, string path_two, vector<Construction_company>* company)
-{
-	fstream file;
-	string str;
-	fstream file_col;
-	Construction_company comp;
-	int count = 0;
-	file.open(path, fstream::in);
-	file_col.open(path_two, fstream::in);
-	if (file.is_open()&&file_col.is_open())
-	{
-		cout << "Файл успешно открыт" << endl;
-		getline(file_col, str);
-		count = stoi(str);
-		for (int i = 0;i < count;i++)
-		{
-			getline(file, comp.customer);
-			getline(file, comp.type_work);
-			getline(file, str);
-			comp.scope_work = stoi(str);
-			getline(file, str);
-			comp.time_work = stoi(str);
-			getline(file, str);
-			comp.price_work = stoi(str);
-			getline(file, comp.name);
-			company->push_back(comp);
-		}
-		cout << "Данные успешно считаны из файла" << endl;
-		file.close();
-		file_col.close();
-	}
-	else
-	{
-		cout << "Ошибка открытия файла" << endl;
-	}
-}
-
 void Construction_company::read_file(string path, vector<Construction_company>* company)
 {
 	fstream file;
