@@ -7,17 +7,17 @@ using namespace std;
 class Construction_company
 {
 public:
-	Construction_company();
-	Construction_company(string customer, string type_work, int scope_work, int time_work, int price_work, string name);
-	~Construction_company();
-	void in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name);
-	void print_field();
-	int find_max(vector<Construction_company> *arr_company, int var_find);
-	int find_min(vector<Construction_company>* arr_company, int var_find);
-	void write_file(string path, vector<Construction_company>* company);
-	void read_file(string path, vector<Construction_company>* company);
-	void search_field(vector<Construction_company>* company, int var_field, string field);
-	void sort_field(vector<Construction_company>* company, int var_field);
+	Construction_company();//конструктор
+	Construction_company(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//конструктор с параметрами
+	~Construction_company();//деструктор
+	void in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//ввод данных
+	void print_field();//печать полей
+	int find_max(vector<Construction_company> *arr_company, int var_find);//поиск максимального
+	int find_min(vector<Construction_company>* arr_company, int var_find);//поиск минимального
+	void write_file(string path, vector<Construction_company>* company);//запись в файл
+	void read_file(string path, vector<Construction_company>* company);//чтение из файла
+	void search_field(vector<Construction_company>* company, int var_field, string field);//поиск по полю
+	void sort_field(vector<Construction_company>* company, int var_field);//сортировка по полю
 private:
 	string customer; //заказчик
 	string type_work; //тип строительных работ
@@ -29,11 +29,11 @@ private:
 class Menu
 {
 public:
-	void print_info();
-	void print_line();
-	void print_doubleLine();
-	void print_field_for_max_or_min();
-	void print_field();
+	void print_info();//печать доступных действий
+	void print_line();//печать линии
+	void print_doubleLine();//печать двойной линии
+	void print_field_for_max_or_min();//печать доступных полей для определения максимума или минимума
+	void print_field();//печать доступных полей
 private:
 };
 int main()
@@ -200,6 +200,7 @@ int main()
 			cout << "Выберите полу по которому хотите провести сортировку" << endl;
 			cin >> var_field;
 			company.sort_field(&arr_company, var_field);
+			cout << "Поле отсортировано" << endl;
 			menu.print_line();
 			break;
 		case 9:
@@ -236,7 +237,6 @@ int main()
 	}
 	return 0;
 }
-//стандартный конструктор
 Construction_company::Construction_company()
 {
 	this->customer = "";
@@ -246,7 +246,6 @@ Construction_company::Construction_company()
 	this->price_work = 0;
 	this->name = "";
 }
-//конструктор с параметрами
 Construction_company::Construction_company(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
 {
 	this->customer = customer;
@@ -256,7 +255,6 @@ Construction_company::Construction_company(string customer, string type_work, in
 	this->price_work = price_work;
 	this->name = name;
 }
-//стандартный деструктор
 Construction_company::~Construction_company()
 {
 	this->customer = "";
@@ -266,7 +264,6 @@ Construction_company::~Construction_company()
 	this->price_work = 0;
 	this->name = "";
 }
-//функция, заполняющая поля класса
 void Construction_company::in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
 {
 	this->customer = customer;
@@ -276,7 +273,6 @@ void Construction_company::in_date(string customer, string type_work, int scope_
 	this->price_work = price_work;
 	this->name = name;
 }
-//печать всех полей класса
 void Construction_company::print_field()
 {
 	cout << "Заказчик : " << customer << endl;
@@ -286,7 +282,6 @@ void Construction_company::print_field()
 	cout << "Стоимость работ : " << price_work << endl;
 	cout << "ФИО ответственного : " << name << endl;
 }
-//поиск максимального элемента
 int Construction_company::find_max(vector<Construction_company> *arr_company, int var_find)
 {
 	int max = 0;
@@ -322,7 +317,6 @@ int Construction_company::find_max(vector<Construction_company> *arr_company, in
 	}
 	return max;
 }
-//поиск минимального элемента
 int Construction_company::find_min(vector<Construction_company> *arr_company, int var_find)
 {
 	int min = 100000;
@@ -358,14 +352,12 @@ int Construction_company::find_min(vector<Construction_company> *arr_company, in
 	}
 	return min;
 }
-//запись полей класса в файл
 void Construction_company::write_file(string path, vector<Construction_company>* company)
 {
 	fstream file;
 	file.open(path, fstream::out);
 	if (file.is_open())
 	{
-		cout << "Файл успешно открыт" << endl;
 		file << company->size() << "\n";
 		for (auto& el : *company)
 		{
@@ -379,12 +371,7 @@ void Construction_company::write_file(string path, vector<Construction_company>*
 		cout << "Данные успешно записаны" << endl;
 		file.close();
 	}
-	else
-	{
-		cout << "Ошибка открытия файла" << endl;
-	}
 }
-//чтение полей класса из файла
 void Construction_company::read_file(string path, vector<Construction_company>* company)
 {
 	fstream file;
@@ -394,7 +381,7 @@ void Construction_company::read_file(string path, vector<Construction_company>* 
 	file.open(path, fstream::in);
 	if (file.is_open())
 	{
-		cout << "Файл успешно открыт" << endl;
+		company->clear();
 		getline(file, str);
 		size = stoi(str);
 		for (int i = 0;i < size;i++)
@@ -413,12 +400,8 @@ void Construction_company::read_file(string path, vector<Construction_company>* 
 		cout << "Данные успешно считаны из файла" << endl;
 		file.close();
 	}
-	else
-	{
-		cout << "Ошибка открытия файла" << endl;
-	}
+	
 }
-
 void Construction_company::search_field(vector<Construction_company>* company, int var_field, string field)
 {
 	for (auto& el : *company)
@@ -466,46 +449,32 @@ void Construction_company::search_field(vector<Construction_company>* company, i
 		}
 	}
 }
-
 void Construction_company::sort_field(vector<Construction_company>* company, int var_field)
 {
 	switch (var_field)
 	{
 	case 1:
-		sort(company->begin(), company->end(), [](const Construction_company &c1, const Construction_company & c2) {
-			return c1.customer > c2.customer;
-			});
+		sort(company->begin(), company->end(), [](const Construction_company &c1, const Construction_company & c2) { return c1.customer > c2.customer; });
 		break;
 	case 2:
-		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
-			return c1.type_work > c2.type_work;
-			});
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) { return c1.type_work > c2.type_work; });
 		break;
 	case 3:
-		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
-			return c1.scope_work > c2.scope_work;
-			});
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) { return c1.scope_work > c2.scope_work; });
 		break;
 	case 4:
-		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
-			return c1.time_work > c2.time_work;
-			});
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) { return c1.time_work > c2.time_work; });
 		break;
 	case 5:
-		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
-			return c1.price_work > c2.price_work;
-			});
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) { return c1.price_work > c2.price_work; });
 		break;
 	case 6:
-		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) {
-			return c1.name > c2.name;
-			});
+		sort(company->begin(), company->end(), [](const Construction_company& c1, const Construction_company& c2) { return c1.name > c2.name; });
 		break;
 	default:
 		break;
 	}
 }
-
 void Menu::print_info()
 {
 	cout << "Доступные действия" << endl;
@@ -520,7 +489,6 @@ void Menu::print_info()
 	cout << "9 - Вывод всех данных" << endl;
 	cout << "10 - Выход из программы" << endl;
 }
-
 void Menu::print_line()
 {
 	for (int i = 0;i < 80;++i)
@@ -529,20 +497,17 @@ void Menu::print_line()
 	}
 	cout << endl;
 }
-
 void Menu::print_doubleLine()
 {
 	print_line();
 	print_line();
 }
-
 void Menu::print_field_for_max_or_min()
 {
 	cout << "1 - Объем работы" << endl;
 	cout << "2 - Продолжительность работы" << endl;
 	cout << "3 - Стоимость работы" << endl;
 }
-
 void Menu::print_field()
 {
 	cout << "Доступные поля" << endl;
