@@ -10,7 +10,7 @@ public:
 	Construction_company();//конструктор
 	Construction_company(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//конструктор с параметрами
 	~Construction_company();//деструктор
-	void in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//ввод данных
+	void in_data(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//ввод данных
 	void print_field();//печать полей
 	int find_max(vector<Construction_company> *arr_company, int var_find);//поиск максимального
 	int find_min(vector<Construction_company>* arr_company, int var_find);//поиск минимального
@@ -40,8 +40,8 @@ int main()
 {
 	setlocale(LC_ALL, "rus");
 	Menu menu;
-	int var_menu, var_delete, var_find, var_field;
-	var_menu = var_delete = var_find = var_field = 0;
+	int var_menu, var_switch;
+	var_menu = 0;
 	bool exit = false;
 	vector<Construction_company> arr_company;
 	Construction_company company;
@@ -87,7 +87,7 @@ int main()
 			cin >> third_name;
 			menu.print_line();
 			name = first_name + " " + second_name + " " + third_name;
-			company.in_date(customer, type_work, scope_work, time_work, price_work, name);
+			company.in_data(customer, type_work, scope_work, time_work, price_work, name);
 			arr_company.push_back(company);
 			cout << "Объект класса создан" << endl;
 			break;
@@ -107,10 +107,10 @@ int main()
 					count++;
 				}
 				cout << "Выберите объект для удаления : " << endl;
-				cin >> var_delete;
-				if (var_delete != 0 && var_delete < count + 1)
+				cin >> var_switch;
+				if (var_switch != 0 && var_switch < count + 1)
 				{
-					arr_company.erase(arr_company.begin() + var_delete-1);
+					arr_company.erase(arr_company.begin() + var_switch-1);
 					cout << "Объект удален" << endl;
 					company.write_file(path, &arr_company);
 				}
@@ -142,10 +142,10 @@ int main()
 			menu.print_line();
 			menu.print_field();
 			cout << "Выберите поле по которому хотите провести поиск" << endl;
-			cin >> var_field;
+			cin >> var_switch;
 			cout << "Введи содержимое данного поля" << endl;
 			cin >> name_field;
-			company.search_field(&arr_company, var_field, name_field);
+			company.search_field(&arr_company, var_switch, name_field);
 			menu.print_line();
 			break;
 		case 6:
@@ -158,10 +158,10 @@ int main()
 			{
 				cout << "Доступные поля для поиска максимального элемента : " << endl;
 				menu.print_field_for_max_or_min();
-				cin >> var_find;
-				if (var_find != 0 && var_find < 4)
+				cin >> var_switch;
+				if (var_switch != 0 && var_switch < 4)
 				{
-					result = company.find_max(&arr_company, var_find);
+					result = company.find_max(&arr_company, var_switch);
 					cout << "Максимальный элемент = " << result << endl;
 				}
 				else
@@ -181,10 +181,10 @@ int main()
 			{
 				cout << "Доступные поля для поиска минимального элемента : " << endl;
 				menu.print_field_for_max_or_min();
-				cin >> var_find;
-				if (var_find != 0 && var_find < 4)
+				cin >> var_switch;
+				if (var_switch != 0 && var_switch < 4)
 				{
-					result = company.find_min(&arr_company, var_find);
+					result = company.find_min(&arr_company, var_switch);
 					cout << "Минимальный элемент = " << result << endl;
 				}
 				else
@@ -198,8 +198,8 @@ int main()
 			menu.print_line();
 			menu.print_field();
 			cout << "Выберите полу по которому хотите провести сортировку" << endl;
-			cin >> var_field;
-			company.sort_field(&arr_company, var_field);
+			cin >> var_switch;
+			company.sort_field(&arr_company, var_switch);
 			cout << "Поле отсортировано" << endl;
 			menu.print_line();
 			break;
@@ -264,7 +264,7 @@ Construction_company::~Construction_company()
 	this->price_work = 0;
 	this->name = "";
 }
-void Construction_company::in_date(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
+void Construction_company::in_data(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
 {
 	this->customer = customer;
 	this->type_work = type_work;
@@ -445,6 +445,7 @@ void Construction_company::search_field(vector<Construction_company>* company, i
 			}
 			break;
 		default:
+			cout << "Поле не найдено" << endl;
 			break;
 		}
 	}
