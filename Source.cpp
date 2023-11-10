@@ -40,17 +40,16 @@ int main()
 {
 	setlocale(LC_ALL, "rus");
 	Menu menu;
+	Construction_company company;
 	int var_menu, var_switch;
-	var_menu = 0;
+	var_menu = var_switch = 0;
 	bool exit = false;
 	vector<Construction_company> arr_company;
-	Construction_company company;
 	string customer, type_work, name, first_name, second_name, third_name, name_field;
 	int result, scope_work, time_work, price_work;
 	result = scope_work = time_work = price_work = 0;
 	int count = 1;
 	string path = "data_company.txt";
-	string path_colEl = "colvo_el.txt";
 	menu.print_doubleLine();
 	menu.print_info();
 	menu.print_doubleLine();
