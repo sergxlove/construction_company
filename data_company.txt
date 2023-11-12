@@ -1,1 +1,19 @@
-0
+3
+sumsung
+build
+134
+120
+130000
+ivanov ivan ivanovich
+xiaomi
+claening
+50
+10
+1200
+petrov petr petrovich
+qualcomm
+repair
+20
+120
+12000
+andreev andrey andreevich
