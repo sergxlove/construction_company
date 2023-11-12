@@ -231,6 +231,7 @@ int main()
 			menu.print_doubleLine();
 			break;
 		default:
+			menu.print_field();
 			break;
 		}
 	}
