@@ -10,7 +10,7 @@ public:
 	Construction_company();//конструктор
 	Construction_company(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//конструктор с параметрами
 	~Construction_company();//деструктор
-	void in_data(string customer, string type_work, int scope_work, int time_work, int price_work, string name);//ввод данных
+	void in_data();//ввод данных
 	void print_field();//печать полей
 	int find_max(vector<Construction_company> *arr_company, int var_find);//поиск максимального
 	int find_min(vector<Construction_company>* arr_company, int var_find);//поиск минимального
@@ -45,9 +45,8 @@ int main()
 	var_menu = var_switch = 0;
 	bool exit = false;
 	vector<Construction_company> arr_company;
-	string customer, type_work, name, first_name, second_name, third_name, name_field;
-	int result, scope_work, time_work, price_work;
-	result = scope_work = time_work = price_work = 0;
+	string name_field;
+	int result = 0;
 	int count = 1;
 	string path = "data_company.txt";
 	menu.print_doubleLine();
@@ -61,32 +60,8 @@ int main()
 		switch (var_menu)
 		{
 		case 1:
-			cout << "¬ведите им€ заказчика" << endl;
-			cin >> customer;
-			menu.print_line();
-			cout << "¬ведите тип строительных работы" << endl;
-			cin >> type_work;
-			menu.print_line();
-			cout << "¬ведите объем работ" << endl;
-			cin >> scope_work;
-			menu.print_line();
-			cout << "¬ведите продолжительность работ" << endl;
-			cin >> time_work;
-			menu.print_line();
-			cout << "¬ведите стоимость работы" << endl;
-			cin >> price_work;
-			menu.print_line();
-			cout << "¬ведите фамилию ответственного" << endl;
-			cin >> first_name;
-			menu.print_line();
-			cout << "¬ведите им€ ответсвенного" << endl;
-			cin >> second_name;
-			menu.print_line();
-			cout << "¬ведите отчество ответственного" << endl;
-			cin >> third_name;
-			menu.print_line();
-			name = first_name + " " + second_name + " " + third_name;
-			company.in_data(customer, type_work, scope_work, time_work, price_work, name);
+			
+			company.in_data();
 			arr_company.push_back(company);
 			cout << "ќбъект класса создан" << endl;
 			break;
@@ -264,14 +239,35 @@ Construction_company::~Construction_company()
 	this->price_work = 0;
 	this->name = "";
 }
-void Construction_company::in_data(string customer, string type_work, int scope_work, int time_work, int price_work, string name)
+void Construction_company::in_data()
 {
-	this->customer = customer;
-	this->type_work = type_work;
-	this->scope_work = scope_work;
-	this->time_work = time_work;
-	this->price_work = price_work;
-	this->name = name;
+	Menu menu;
+	string first_name, second_name, third_name;
+	cout << "¬ведите им€ заказчика" << endl;
+	cin >> customer;
+	menu.print_line();
+	cout << "¬ведите тип строительных работы" << endl;
+	cin >> type_work;
+	menu.print_line();
+	cout << "¬ведите объем работ" << endl;
+	cin >> scope_work;
+	menu.print_line();
+	cout << "¬ведите продолжительность работ" << endl;
+	cin >> time_work;
+	menu.print_line();
+	cout << "¬ведите стоимость работы" << endl;
+	cin >> price_work;
+	menu.print_line();
+	cout << "¬ведите фамилию ответственного" << endl;
+	cin >> first_name;
+	menu.print_line();
+	cout << "¬ведите им€ ответсвенного" << endl;
+	cin >> second_name;
+	menu.print_line();
+	cout << "¬ведите отчество ответственного" << endl;
+	cin >> third_name;
+	menu.print_line();
+	name = first_name + " " + second_name + " " + third_name;
 }
 void Construction_company::print_field()
 {
