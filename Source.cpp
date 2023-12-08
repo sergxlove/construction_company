@@ -307,7 +307,7 @@ int Construction_company::find_max(vector<Construction_company> &arr_company, in
 		{
 			if (el.price_work > max)
 			{
-				max = el.time_work;
+				max = el.price_work;
 			}
 		}
 	}
