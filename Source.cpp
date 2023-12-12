@@ -113,14 +113,21 @@ int main()
 			menu.print_line();
 			break;
 		case 5:
-			menu.print_line();
-			menu.print_field();
-			cout << "Выберите поле по которому хотите провести поиск" << endl;
-			cin >> var_switch;
-			cout << "Введи содержимое данного поля" << endl;
-			cin >> name_field;
-			company.search_field(arr_company, var_switch, name_field);
-			menu.print_line();
+			if (arr_company.empty())
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
+			else
+			{
+				menu.print_line();
+				menu.print_field();
+				cout << "Выберите поле по которому хотите провести поиск" << endl;
+				cin >> var_switch;
+				cout << "Введи содержимое данного поля" << endl;
+				cin >> name_field;
+				company.search_field(arr_company, var_switch, name_field);
+				menu.print_line();
+			}
 			break;
 		case 6:
 			menu.print_line();
@@ -169,13 +176,20 @@ int main()
 			menu.print_line();
 			break;
 		case 8:
-			menu.print_line();
-			menu.print_field();
-			cout << "Выберите полу по которому хотите провести сортировку" << endl;
-			cin >> var_switch;
-			company.sort_field(arr_company, var_switch);
-			cout << "Поле отсортировано" << endl;
-			menu.print_line();
+			if (arr_company.empty())
+			{
+				cout << "В векторе нет объектов" << endl;
+			}
+			else
+			{
+				menu.print_line();
+				menu.print_field();
+				cout << "Выберите полу по которому хотите провести сортировку" << endl;
+				cin >> var_switch;
+				company.sort_field(arr_company, var_switch);
+				cout << "Поле отсортировано" << endl;
+				menu.print_line();
+			}
 			break;
 		case 9:
 			menu.print_line();
